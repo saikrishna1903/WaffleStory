@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Waffle Story</title>
+    <style>
+		        /* Styles from before (no changes) */
+		        body {
+		            font-family: Arial, sans-serif;
+		            margin: 0;
+		            padding: 0;
+		        }
+
+		        header {
+		            background-color: #2c3e50;
+		            color: white;
+		            padding: 10px;
+		            display: flex;
+		            justify-content: space-between;
+		            align-items: center;
+		        }
+
+		        header h1 {
+		            margin: 0;
+		            text-align: center;
+		            flex-grow: 1;
+		        }
+
+		        header .date, header .username {
+		            flex-basis: 15%;
+		            text-align: center;
+		        }
+
+		        .tabs {
+		            display: flex;
+		            background-color: #34495e;
+		        }
+
+		        .tabs button {
+		            flex-grow: 1;
+		            padding: 10px;
+		            background-color: #34495e;
+		            color: white;
+		            border: none;
+		            cursor: pointer;
+		        }
+
+		        .tabs button.active {
+		            background-color: #2c3e50;
+		        }
+
+		        .main-content {
+		            padding: 20px;
+		            display: none;
+		        }
+
+		        .main-content.active {
+		            display: block;
+		        }
+
+		        .sections {
+		            display: flex;
+		            height: 80vh;
+		        }
+
+		        .sections .left {
+		            width: 30%;
+		            overflow-y: auto;
+		            border-right: 1px solid #ccc;
+		        }
+
+		        .sections .left ul {
+		            list-style-type: none;
+		            padding: 0;
+		        }
+
+		        .sections .left li {
+		            padding: 10px;
+		            background-color: #ecf0f1;
+		            margin: 5px 0;
+		            cursor: pointer;
+		        }
+
+		        .sections .left li:hover {
+		            background-color: #bdc3c7;
+		        }
+
+		        .sections .right {
+		            width: 70%;
+		            overflow-y: auto;
+		            padding-left: 20px;
+		        }
+
+		        .sections .right ul {
+		            list-style-type: none;
+		            padding: 0;
+		        }
+
+		        .sections .right li {
+		            padding: 10px;
+		            background-color: #f8f9fa;
+		            margin: 5px 0;
+		            cursor: pointer;
+		        }
+
+		        .sections .right li:hover {
+		            background-color: #e9ecef;
+		        }
+
+		        .cart-icon {
+		            position: fixed;
+		            bottom: 20px;
+		            right: 20px;
+		            background-color: #2c3e50;
+		            color: white;
+		            padding: 15px;
+		            border-radius: 50%;
+		            cursor: pointer;
+		            font-size: 20px;
+		        }
+
+		        .cart-popup {
+		            display: none;
+		            position: fixed;
+		            top: 50%;
+		            left: 50%;
+		            transform: translate(-50%, -50%);
+		            background-color: white;
+		            padding: 20px;
+		            border-radius: 8px;
+		            width: 300px;
+		            z-index: 1000;
+		            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+		        }
+
+		        .cart-popup ul {
+		            list-style-type: none;
+		            padding: 0;
+		        }
+
+		        .cart-popup li {
+		            margin: 10px 0;
+		        }
+
+		        .cart-popup p {
+		            font-weight: bold;
+		        }
+
+		        .cart-popup button {
+		            background-color: #2c3e50;
+		            color: white;
+		            border: none;
+		            padding: 10px;
+		            width: 100%;
+		            border-radius: 5px;
+		            cursor: pointer;
+		        }
+		    
+        /* Styles for the cart + and - buttons */
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-item span {
+            margin-right: 10px;
+        }
+
+        .cart-item button {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cart-item button:hover {
+            background-color: #34495e;
+        }
+
+        /* Styles for the cart popup */
+        .cart-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 350px; /* Increased width to fit + and - buttons */
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-popup ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .cart-popup li {
+            margin: 10px 0;
+        }
+
+        .cart-popup p {
+            font-weight: bold;
+        }
+
+        .cart-popup button {
+            background-color: #2c3e50;
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+		.download-icon {
+		    position: fixed;
+		    bottom: 20px;
+		    right: 80px; /* Position it beside the cart icon */
+		    background-color: #2c3e50;
+		    color: white;
+		    padding: 15px; /* Match the cart icon's padding */
+		    border-radius: 50%;
+		    cursor: pointer;
+		    font-size: 20px; /* Match the cart icon's font size */
+		    text-align: center;
+		}
+
+		.download-icon:hover {
+		    background-color: #34495e; /* Slight hover effect */
+		}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="date">Date: <span id="current-date"></span></div>
+        <h1>A Waffle Story</h1>
+        <div class="username">Username: Biller</div>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-link active" onclick="openTab('orders')">Orders</button>
+        <button class="tab-link" onclick="openTab('sales')">Sales</button>
+        <button class="tab-link" onclick="openTab('todays-orders')">Today's Orders</button>
+    </div>
+
+    <div id="orders" class="main-content active">
+        <div class="sections">
+            <div class="left">
+                <ul id="section-list"></ul>
+            </div>
+            <div class="right">
+                <ul id="subsections"></ul>
+            </div>
+        </div>
+    </div>
+
+	<div id="sales" class="main-content">
+	    <h2>Sales</h2>
+	    <p>Day Sales: ₹<span id="day-sales">0</span></p>
+	    <p>Weekly Sales: ₹<span id="weekly-sales">0</span></p>
+	    <p>Monthly Sales: ₹<span id="monthly-sales">0</span></p>
+	    <p>Yearly Sales: ₹<span id="yearly-sales">0</span></p>
+	</div>
+
+    <div id="todays-orders" class="main-content">
+        <h2>Today's Orders</h2>
+        <ul id="todays-orders-list"></ul>
+    </div>
+	<div class="download-icon" onclick="downloadExcel()">📥</div>
+    <div class="cart-icon" onclick="openCart()">🛒</div>
+
+    <div id="cart-popup" class="cart-popup">
+        <h3>Your Cart</h3>
+        <ul id="cart-items"></ul>
+        <p>Total: ₹<span id="cart-total">0</span></p>
+        <button onclick="submitOrder()">Submit</button>
+    </div>
+
+    <script>
+        // Open tab functionality
+        function openTab(tabName) {
+            document.querySelectorAll('.main-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabName).classList.add('active');
+            document.querySelectorAll('.tab-link').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[onclick="openTab('${tabName}')"]`).classList.add('active');
+            
+            // Fetch orders when the "Today's Orders" tab is clicked
+            if (tabName === 'todays-orders') {
+                fetchOrders(); // Fetch orders only when this tab is clicked
+            }
+        }
+
+        // Initialize cart functionality
+        const cart = [];
+        const cartPopup = document.getElementById('cart-popup');
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+
+        function openCart() {
+            cartPopup.style.display = cartPopup.style.display === 'block' ? 'none' : 'block';
+        }
+
+		function downloadExcel() {
+		    window.location.href = '/export-to-excel';
+		}
+        function addToCart(name, price) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                const item = { name, price, quantity: 1 };
+                cart.push(item);
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.classList.add('cart-item');
+                li.innerHTML = `
+                    <span>${item.name} - ₹${item.price} x ${item.quantity}</span>
+                    <div>
+                        <button onclick="updateItemQuantity('${item.name}', -1)">-</button>
+                        <button onclick="updateItemQuantity('${item.name}', 1)">+</button>
+                    </div>
+                `;
+                cartItems.appendChild(li);
+                total += item.price * item.quantity;
+            });
+            cartTotal.textContent = total;
+        }
+
+        function updateItemQuantity(name, change) {
+            const item = cart.find(item => item.name === name);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    const index = cart.indexOf(item);
+                    cart.splice(index, 1); // Remove item if quantity is zero or negative
+                }
+                updateCart();
+            }
+        }
+
+		async function submitOrder() {
+		    // Preparing the order data with quantity
+		    const orderData = {
+		        items: cart.map(item => ({
+		            name: item.name,
+		            price: item.price,
+		            quantity: item.quantity // Include quantity in the POST request
+		        }))
+		    };
+
+		    try {
+		        // Send the POST request to the server to submit the order
+		        const response = await fetch('/submitOrder', {
+		            method: 'POST',
+		            headers: { 'Content-Type': 'application/json' },
+		            body: JSON.stringify(orderData),
+		        });
+
+		        // Parse the response
+		        const result = await response.json();
+
+		        if (response.ok) {
+		            alert('Order submitted successfully!');
+		            cart.length = 0;  // Empty the cart after submission
+		            updateCart(); // Update the cart display
+					cartPopup.style.display = 'none';
+		        } else {
+		            alert('Failed to submit order: ' + result.message);
+		        }
+
+		        // Fetch all orders again after submitting
+		        fetchOrders(); // Fetch all orders to display in the 'Today's Orders' tab
+		    } catch (error) {
+		        console.error('Error submitting order:', error);
+		        alert('There was an error submitting your order. Please try again.');
+		    }
+		}
+		async function fetchSalesData() {
+		        try {
+		            const response = await fetch('/getSalesData');
+		            if (response.ok) {
+		                const salesData = await response.json();
+		                document.getElementById('day-sales').textContent = salesData.daySales;
+		                document.getElementById('weekly-sales').textContent = salesData.weeklySales;
+		                document.getElementById('monthly-sales').textContent = salesData.monthlySales;
+		                document.getElementById('yearly-sales').textContent = salesData.yearlySales;
+		            } else {
+		                console.error('Failed to fetch sales data');
+		            }
+		        } catch (error) {
+		            console.error('Error fetching sales data:', error);
+		        }
+		    }
+
+		    // Call the function to fetch the sales data when the Sales tab is opened
+		    function openTab(tabName) {
+		        document.querySelectorAll('.main-content').forEach(tab => {
+		            tab.classList.remove('active');
+		        });
+		        document.getElementById(tabName).classList.add('active');
+		        document.querySelectorAll('.tab-link').forEach(btn => {
+		            btn.classList.remove('active');
+		        });
+		        document.querySelector(`[onclick="openTab('${tabName}')"]`).classList.add('active');
+		        
+		        // Fetch sales data when the "Sales" tab is clicked
+		        if (tabName === 'sales') {
+		            fetchSalesData(); // Fetch sales data when this tab is clicked
+		        }
+		    }
+
+        async function fetchSections() {
+            try {
+                const response = await fetch('/allSections');
+                const data = await response.json();
+                renderSections(data);
+            } catch (error) {
+                console.error('Error fetching sections:', error);
+            }
+        }
+
+        function renderSections(sections) {
+            const sectionList = document.getElementById('section-list');
+            sectionList.innerHTML = '';
+            sections.forEach(section => {
+                const sectionItem = document.createElement('li');
+                sectionItem.textContent = section.name;
+                sectionItem.addEventListener('click', () => loadSubsections(section.id));
+                sectionList.appendChild(sectionItem);
+            });
+        }
+
+        async function loadSubsections(sectionId) {
+            try {
+                const response = await fetch(`/allWaffleTypes/${sectionId}`);
+                const data = await response.json();
+                renderSubsections(data);
+            } catch (error) {
+                console.error('Error fetching subsections:', error);
+            }
+        }
+
+        function renderSubsections(subsections) {
+            const subsectionsDiv = document.getElementById('subsections');
+            subsectionsDiv.innerHTML = '';
+            subsections.forEach(subsection => {
+                const subsectionItem = document.createElement('li');
+                subsectionItem.textContent = `${subsection.name} - ₹${subsection.price}`;
+                subsectionItem.addEventListener('click', () => addToCart(subsection.name, subsection.price));
+                subsectionsDiv.appendChild(subsectionItem);
+            });
+        }
+
+      
+		// Function to fetch today's orders
+		async function fetchOrders() {
+		    const today = new Date();
+
+		    // Set the time to 12:00 AM for the start of the day
+		    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+
+		    // Format the date to 'YYYY-MM-DD'
+		    const formatDate = date => date.toISOString().slice(0, 10); // Only get the date part
+
+		    const todayDate = formatDate(startOfDay); // Get today's date in 'YYYY-MM-DD' format
+
+		    try {
+		        // Make a GET request with only the date (no need for start and end)
+		        const response = await fetch(`/getAllOrders?date=${todayDate}`);
+		        if (response.ok) {
+		            const orders = await response.json(); // Parse the JSON response
+		            renderOrders(orders); // Render the orders in the UI
+		        } else {
+		            console.error('Failed to fetch orders');
+		        }
+		    } catch (error) {
+		        console.error('Error fetching orders:', error);
+		    }
+		}
+
+		// Function to render orders in the UI
+		function renderOrders(orders) {
+		    const ordersList = document.getElementById('todays-orders-list');
+		    ordersList.innerHTML = ''; // Clear existing orders
+
+		    // Loop through each order and display its details
+		    orders.forEach(order => {
+		        const orderItem = document.createElement('li');
+		        orderItem.innerHTML = `
+		            <strong>Order #${order.id}</strong>
+		            <ul>
+		                ${order.items.map(item => `
+		                    <li>${item.name} - ₹${item.price} - ${item.quantity}</li>
+		                `).join('')}
+		            </ul>
+		        `;
+		        ordersList.appendChild(orderItem); // Append the order to the list
+		    });
+		}
+
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchSections();
+            document.getElementById('current-date').textContent = new Date().toLocaleDateString();
+        });
+    </script>
+</body>
+</html>
