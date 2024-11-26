@@ -36,7 +36,7 @@ public class SecurityConfig {
         http
                         .csrf(csrf -> csrf.disable()).cors(cors -> cors.disable())
                         .authorizeHttpRequests(auth -> auth
-                                        .requestMatchers("/","/generateToken","/export-to-excel","/h2-console/**").permitAll()
+                                        .requestMatchers("/","/generateToken","/export-to-excel","/h2-console/**","/addUser").permitAll()
                                         .anyRequest().authenticated())
                         .authenticationProvider(authenticationProvider()) // Custom authentication provider
                         .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class);;

@@ -1,7 +1,8 @@
 
 
-INSERT INTO users (id, username, password, roles) VALUES (1, 'sai', '$2a$10$d0euRMGvQdIXPJtAgV.m3.3179oIRbeHiuTSSMp2/lrU4OBJ0Llqu','ROLE_ADMIN');
-INSERT INTO users (id, username, password, roles) VALUES (2, 'admin', 'admin','ROLE_BILLER');
+INSERT INTO users (id, username, password, roles) VALUES (1, 'Sai', '$2a$10$d0euRMGvQdIXPJtAgV.m3.3179oIRbeHiuTSSMp2/lrU4OBJ0Llqu','ROLE_ADMIN');
+INSERT INTO users (id, username, password, roles) VALUES (2, 'Harsha', '$2a$10$XCxWl9Gl4fJa/B41UKBuXOuD1qzCOqUHNLswjKrYjSXpZkyff8XhG','ROLE_ADMIN');
+INSERT INTO users (id, username, password, roles) VALUES (3, 'Biller', '$2a$10$w/1Be9Iu90/uoDjzjpOKqeaRjphWBvvV2M/uQmNQJixMG8zCvEI8u','ROLE_BILLER');
 
 Insert INTO sections(id,name) VALUES(1,'Classics');
 Insert INTO sections(id,name) VALUES(2,'Chocolate');
