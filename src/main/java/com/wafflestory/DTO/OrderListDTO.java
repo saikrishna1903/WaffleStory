@@ -23,7 +23,17 @@ public class OrderListDTO {
     private List<OrdersDTO> items;
 
     private Date timestamp;
+    
+    private String currentOrderTime;
 	
+	public String getCurrentOrderTime() {
+		return currentOrderTime;
+	}
+
+	public void setCurrentOrderTime(String currentOrderTime) {
+		this.currentOrderTime = currentOrderTime;
+	}
+
 	public Date getTimestamp() {
 		return timestamp;
 	}

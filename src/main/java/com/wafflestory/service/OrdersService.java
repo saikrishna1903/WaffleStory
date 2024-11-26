@@ -1,10 +1,11 @@
 package com.wafflestory.service;
 
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,12 @@ Calendar calendar = Calendar.getInstance();
         // Get the current date and time
         Date currentDateTime = calendar.getTime();
         ordersDTO.setTimestamp(currentDateTime);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        
+        // Set the time zone to IST
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata"));
+        
+        ordersDTO.setCurrentOrderTime(sdf.format(currentDateTime));
 		ordersRepo.save(ordersDTO);
 	}
 

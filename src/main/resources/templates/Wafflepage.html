@@ -632,19 +632,21 @@
 						function renderOrders(orders) {
 						    const ordersList = document.getElementById('todays-orders-list');
 						    ordersList.innerHTML = ''; // Clear existing orders
-
+							let orderCount = orders.length;
 						    // Loop through each order and display its details
 						    orders.forEach(order => {
 						        const orderItem = document.createElement('li');
 						        orderItem.innerHTML = `
-						            <strong>Order #${order.id}</strong>
+						            <strong>Order #${orderCount}</strong>
 						            <ul>
 						                ${order.items.map(item => `
-						                    <li>${item.name} - ₹${item.price} - ${item.quantity}</li>
+						                    <li><b>Item Name:</b> ${item.name} - <b>Price:</b> ₹${item.price} - <b>Quantity:</b>  ${item.quantity}</li>
 						                `).join('')}
+										<b>Time:</b> ${order.currentOrderTime}
 						            </ul>
 						        `;
 						        ordersList.appendChild(orderItem); // Append the order to the list
+								orderCount--;
 						    });
 						}
 

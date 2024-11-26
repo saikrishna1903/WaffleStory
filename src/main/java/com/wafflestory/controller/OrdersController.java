@@ -1,5 +1,6 @@
 package com.wafflestory.controller;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -44,7 +45,10 @@ public class OrdersController {
 	@GetMapping("/getAllOrders")
 	public List<OrderListDTO> getAllOrders(@RequestParam String date){
 		Date parsedDate = parseDate(date);
-		return ordersService.getAllOrders(parsedDate);
+		
+		List<OrderListDTO> orderList = ordersService.getAllOrders(parsedDate);
+		Collections.reverse(orderList);
+		return orderList;
 	}
 	
 	@GetMapping("/getSalesData")
